@@ -1,29 +1,31 @@
-import pandas as pd  # Certifique-se de importar o Pandas
+import pandas as pd
+import unicodedata
+
+def remove_accents(text):
+    """
+    Remove acentos de um texto.
+    """
+    if not isinstance(text, str):
+        return text
+    return ''.join(c for c in unicodedata.normalize('NFD', text) if unicodedata.category(c) != 'Mn')
 
 def search_in_dataframe(dataframe, query):
     """
-    Realiza uma busca textual em um DataFrame.
-
-    Args:
-        dataframe (pd.DataFrame): O DataFrame onde a busca será realizada.
-        query (str): O termo de busca.
-
-    Returns:
-        list: Lista de dicionários contendo os registros que correspondem à busca.
+    Realiza uma busca textual no DataFrame e retorna os registros mais relevantes.
     """
-    if not query:
-        raise ValueError("O termo de busca não pode estar vazio.")
+    query = remove_accents(query.lower())  # Normalizar o texto e remover acentos
+    
+    relevant_columns = ['Razao_Social', 'Nome_Fantasia', 'Cidade', 'UF', 'Modalidade', 'Telefone', 'Endereco_eletronico']  # Campos relevantes
 
-    # Filtrar os registros que contêm o termo de busca em qualquer coluna
-    filtered_data = dataframe[
-        dataframe.apply(lambda row: row.astype(str).str.contains(query, case=False, na=False).any(), axis=1)
-    ]
+    # Transformar todos os valores dos campos relevantes em strings, lidar com valores nulos e remover acentos
+    dataframe[relevant_columns] = dataframe[relevant_columns].fillna('').astype(str).applymap(remove_accents)
 
-    # Converter todas as colunas para strings
-    filtered_data = filtered_data.astype(str)
+    # Filtrar os registros onde a query está contida em algum valor dos campos relevantes
+    filtered_df = dataframe[dataframe[relevant_columns].apply(
+        lambda row: any(query in value.lower() for value in row), axis=1
+    )]
 
-    # Substituir valores "nan" (resultantes da conversão) por None
-    filtered_data = filtered_data.replace("nan", None)
+    # Garantir que todos os valores no DataFrame sejam serializáveis em JSON
+    filtered_df = filtered_df.fillna('').replace({pd.NA: '', None: ''})
 
-    # Retornar os resultados como uma lista de dicionários
-    return filtered_data.to_dict(orient='records')
+    return filtered_df.to_dict(orient='records')  # Retornar os resultados como uma lista de dicionários

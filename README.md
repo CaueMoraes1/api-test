@@ -82,7 +82,7 @@ api-test/
 
 ### Frontend Vue:
 
-1. Navegue até o diretório do fron
+1. Navegue até o diretório do front:
     ``` bash
     cd ..
     cd web

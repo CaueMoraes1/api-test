@@ -1,0 +1,39 @@
+{
+	"info": {
+		"_postman_id": "d079f137-c681-4cee-9026-83005f028e1d",
+		"name": "API TEST - Operadoras",
+		"description": "Rota: /search  \nMétodo: GET  \nDescrição: Realiza uma busca textual no arquivo CSV carregado e retorna os registros que correspondem ao termo de busca.  \nParâmetros:\n\n- q (string): Termo de busca (obrigatório).  \n    Exemplo de uso:  \n    [http://127.0.0.1:5000/api/search?q=operadora](http://127.0.0.1:5000/api/search?q=operadora)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "42476493"
+	},
+	"item": [
+		{
+			"name": "Buscar Operadoras",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/search?q=operadora",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"search"
+					],
+					"query": [
+						{
+							"key": "q",
+							"value": "operadora"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

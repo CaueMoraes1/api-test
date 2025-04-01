@@ -71,20 +71,15 @@ api-test/
     ``` bash
     pip install -r requirements.txt
 
-2. Navegue até o diretorio do servidor:
-    ``` bash
-    cd server
-
-3. Inicie o servidor Flask:
+2. Inicie o servidor Python:
     ```bash
-    flask run
+    python -m server.app
 
 
 ### Frontend Vue:
 
-1. Navegue até o diretório do front:
+1. Em um novo terminal, navegue até o diretório do front:
     ``` bash
-    cd ..
     cd web
 
 2. Instale as dependencias do projeto:
